@@ -1,0 +1,2171 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporta Seguro - Plataforma de Denuncias</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
+    <style>
+         :root {
+            --primary: #2c3e50;
+            --secondary: #e74c3c;
+            --accent: #3498db;
+            --light: #f5f5f5;
+            --dark: #2c3e50;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        /* Header */
+        
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: var(--transition);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+        }
+        
+        .logo i {
+            font-size: 2rem;
+            transition: var(--transition);
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            position: relative;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: var(--transition);
+            transform: translateX(-50%);
+        }
+        
+        nav a:hover::after {
+            width: 80%;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        /* Hero Section */
+        
+        .hero {
+            padding: 5rem 0;
+            background: linear-gradient(rgba(44, 62, 80, 0.85), rgba(44, 62, 80, 0.85)), url('https://images.unsplash.com/photo-1593113630400-ea4288922497?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: fadeInDown 1s ease;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.2rem;
+            background-color: var(--secondary);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            margin: 0.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+        }
+        
+        .btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-outline:hover {
+            background: white;
+            color: var(--secondary);
+            transform: translateY(-5px);
+        }
+        /* Features */
+        
+        .features {
+            padding: 6rem 0;
+            background: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1.2rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+        
+        .section-title p {
+            color: #777;
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 2.5rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid #f0f0f0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 0;
+            background: var(--secondary);
+            transition: var(--transition);
+        }
+        
+        .feature-card:hover::before {
+            height: 100%;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-card i {
+            font-size: 3.5rem;
+            color: var(--secondary);
+            margin-bottom: 1.8rem;
+            transition: var(--transition);
+        }
+        
+        .feature-card:hover i {
+            transform: scale(1.1);
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 1.2rem;
+            color: var(--primary);
+            font-size: 1.4rem;
+        }
+        
+        .feature-card p {
+            color: #666;
+            line-height: 1.7;
+        }
+        /* Form Section */
+        
+        .form-section {
+            padding: 6rem 0;
+            background-color: var(--light);
+            position: relative;
+        }
+        
+        .form-container {
+            background: white;
+            padding: 3.5rem;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            max-width: 850px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .form-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            color: var(--primary);
+        }
+        
+        .form-title h2 {
+            font-size: 2.2rem;
+            margin-bottom: 0.8rem;
+        }
+        
+        .form-title p {
+            color: #777;
+            font-size: 1.1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.8rem;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1.05rem;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: #fafafa;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--accent);
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .form-group textarea {
+            min-height: 180px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+        
+        .required::after {
+            content: " *";
+            color: var(--secondary);
+        }
+        
+        .privacy-note {
+            background-color: #f0f7ff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--accent);
+            position: relative;
+        }
+        
+        .privacy-note i {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+        
+        .privacy-note p {
+            margin-left: 2rem;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        /* Info Section */
+        
+        .info-section {
+            padding: 6rem 0;
+            background: white;
+        }
+        
+        .info-content {
+            display: flex;
+            align-items: stretch;
+            gap: 4rem;
+        }
+        
+        .info-text {
+            flex: 1;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .info-visual {
+            flex: 1;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .info-item i {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-top: 0.3rem;
+            flex-shrink: 0;
+        }
+        
+        .info-item div {
+            flex: 1;
+        }
+        
+        .info-item h4 {
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        .info-item p {
+            color: #666;
+            line-height: 1.6;
+        }
+        /* Trabajos Section */
+        
+        .trabajos-section {
+            padding: 6rem 0;
+            background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+        }
+        
+        .trabajos-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        
+        .trabajos-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-box input {
+            padding: 0.8rem 1rem 0.8rem 3rem;
+            border: 2px solid #e9ecef;
+            border-radius: 50px;
+            width: 300px;
+            transition: var(--transition);
+        }
+        
+        .search-box input:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 1.2rem;
+            color: #6c757d;
+        }
+        
+        .filter-select {
+            padding: 0.8rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 50px;
+            background: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .filter-select:focus {
+            border-color: var(--accent);
+            outline: none;
+        }
+        
+        .trabajos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .trabajo-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .trabajo-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+        
+        .trabajo-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .trabajo-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .trabajo-title {
+            flex: 1;
+        }
+        
+        .trabajo-title h3 {
+            color: var(--primary);
+            margin-bottom: 0.3rem;
+            font-size: 1.2rem;
+        }
+        
+        .trabajo-title p {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .trabajo-body {
+            padding: 1.5rem;
+        }
+        
+        .trabajo-desc {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .trabajo-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .trabajo-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .trabajo-actions {
+            display: flex;
+            gap: 0.8rem;
+        }
+        
+        .trabajo-btn {
+            flex: 1;
+            padding: 0.7rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .trabajo-btn.download {
+            background: var(--success);
+            color: white;
+        }
+        
+        .trabajo-btn.download:hover {
+            background: #219653;
+        }
+        
+        .trabajo-btn.view {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .trabajo-btn.view:hover {
+            background: #2980b9;
+        }
+        
+        .upload-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-top: 3rem;
+        }
+        
+        .upload-title {
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .upload-title i {
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+        
+        .upload-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .file-upload {
+            grid-column: 1 / -1;
+            position: relative;
+            border: 2px dashed #e9ecef;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .file-upload:hover {
+            border-color: var(--accent);
+        }
+        
+        .file-upload input {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .file-upload-icon {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        
+        .file-upload-text h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .file-upload-text p {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .file-name {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--primary);
+        }
+        
+        .upload-btn {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: flex-end;
+        }
+        /* Footer */
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+            position: relative;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1.8rem;
+            font-size: 1.4rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--secondary);
+        }
+        
+        .footer-section p {
+            margin-bottom: 1.2rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .footer-section a {
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+            display: block;
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-section a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        /* Modal */
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+        
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 3rem;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+            position: relative;
+        }
+        
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-icon {
+            font-size: 5rem;
+            color: var(--success);
+            margin-bottom: 1.5rem;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .modal-icon.error {
+            color: var(--secondary);
+            animation: shake 0.5s;
+        }
+        
+        .modal h2 {
+            margin-bottom: 1.2rem;
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+        
+        .modal p {
+            margin-bottom: 1.2rem;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .close-modal {
+            margin-top: 1.5rem;
+            padding: 0.8rem 2rem;
+        }
+        /* Loading Overlay */
+        
+        #loadingOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+        }
+        
+        #loadingOverlay.show {
+            display: flex;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 1.5rem;
+        }
+        
+        #loadingOverlay p {
+            font-size: 1.2rem;
+            text-align: center;
+            max-width: 300px;
+        }
+        /* Animaciones */
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes shake {
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+            10%,
+            30%,
+            50%,
+            70%,
+            90% {
+                transform: translateX(-10px);
+            }
+            20%,
+            40%,
+            60%,
+            80% {
+                transform: translateX(10px);
+            }
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        /* Protección contra inspección */
+        
+        .no-inspect {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        .no-right-click {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        /* Responsive */
+        
+        @media (max-width: 992px) {
+            .info-content {
+                flex-direction: column;
+                gap: 3rem;
+            }
+            .hero h2 {
+                font-size: 2.3rem;
+            }
+            .hero p {
+                font-size: 1.1rem;
+            }
+            .trabajos-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .trabajos-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .search-box {
+                width: 100%;
+            }
+            .search-box input {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1.2rem;
+            }
+            nav ul {
+                flex-direction: column;
+                gap: 0.8rem;
+                text-align: center;
+                display: none;
+            }
+            nav ul.show {
+                display: flex;
+            }
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                top: 1.2rem;
+                right: 1.5rem;
+            }
+            .hero {
+                padding: 4rem 0;
+            }
+            .hero h2 {
+                font-size: 2rem;
+            }
+            .btn {
+                padding: 0.9rem 1.8rem;
+                font-size: 0.95rem;
+            }
+            .form-container {
+                padding: 2.5rem 2rem;
+            }
+            .feature-card {
+                padding: 2rem 1.5rem;
+            }
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+            .modal-content {
+                padding: 2.5rem 2rem;
+            }
+            .trabajos-grid {
+                grid-template-columns: 1fr;
+            }
+            .upload-form {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            .form-container {
+                padding: 2rem 1.5rem;
+            }
+            .info-text,
+            .info-visual {
+                padding: 2rem 1.5rem;
+            }
+            .modal-content {
+                padding: 2rem 1.5rem;
+            }
+            .modal-icon {
+                font-size: 4rem;
+            }
+            .trabajos-actions {
+                flex-direction: column;
+            }
+            .filter-select {
+                width: 100%;
+            }
+        }
+        /* Scroll suave */
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        /* Mejoras de accesibilidad */
+        
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            html {
+                scroll-behavior: auto;
+            }
+        }
+        /* Focus styles para mejor accesibilidad */
+        
+        button:focus,
+        input:focus,
+        textarea:focus,
+        select:focus,
+        a:focus {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+        /* Estilos para validación de formularios */
+        
+        .form-group.error input,
+        .form-group.error textarea,
+        .form-group.error select {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+        
+        .error-message {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        .form-group.error .error-message {
+            display: block;
+        }
+        /* Paginación */
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .pagination-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            background: white;
+            color: var(--primary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .pagination-btn:hover,
+        .pagination-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+        
+        .pagination-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body oncontextmenu="return false;" class="no-right-click">
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <h1>Reporta Seguro</h1>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav>
+                <ul id="navMenu">
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#reportar">Reportar</a></li>
+                    <li><a href="#trabajos">Trabajos</a></li>
+                    <li><a href="#informacion">Información</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="container hero-content">
+            <h2>Reporta tu Caso con Confianza</h2>
+            <p>Tu voz es importante. Reporta con confianza y ayúdanos a crear un entorno seguro para todos.</p>
+            <div>
+                <a href="#reportar" class="btn">Reportar Ahora</a>
+                <a href="#trabajos" class="btn btn-outline">Ver Trabajos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>¿Por qué reportar con nosotros?</h2>
+                <p>Ofrecemos un sistema seguro y confidencial para reportar casos de abuso y violencia</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-lock"></i>
+                    <h3>Confidencialidad</h3>
+                    <p>Tus datos personales están protegidos con encriptación de grado militar.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-user-shield"></i>
+                    <h3>Protección</h3>
+                    <p>Tu identidad está protegida durante todo el proceso de denuncia.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-headset"></i>
+                    <h3>Soporte</h3>
+                    <p>Obtén ayuda y acompañamiento durante todo el proceso de denuncia.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form Section -->
+    <section class="form-section" id="reportar">
+        <div class="container">
+            <div class="section-title">
+                <h2>Reporte de Abuso</h2>
+                <p>Completa el formulario con la información necesaria para procesar tu reporte</p>
+            </div>
+            <div class="form-container">
+                <!-- IMPORTANTE: El formulario NO tiene action y usa method="post" -->
+                <form id="reportForm" name="reportForm" method="post">
+                    <div class="privacy-note">
+                        <i class="fas fa-info-circle"></i>
+                        <p>Tu información personal está protegida y será tratada con la máxima confidencialidad. Todos los datos se encriptan antes de ser enviados. Recibirás una copia de confirmación en tu correo electrónico.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nombre" class="required">Nombre</label>
+                        <input type="text" id="nombre" name="nombre" required placeholder="Ingrese su nombre" autocomplete="off">
+                        <div class="error-message">Por favor ingresa tu nombre</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="apellido" class="required">Apellido</label>
+                        <input type="text" id="apellido" name="apellido" required placeholder="Ingrese su apellido" autocomplete="off">
+                        <div class="error-message">Por favor ingresa tu apellido</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefono" class="required">Teléfono</label>
+                        <input type="tel" id="telefono" name="telefono" required placeholder="Ingrese su teléfono" autocomplete="off">
+                        <div class="error-message">Por favor ingresa un número de teléfono válido</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="correo" class="required">Correo electrónico</label>
+                        <input type="email" id="correo" name="correo" required placeholder="Ingrese su correo" autocomplete="off">
+                        <div class="error-message">Por favor ingresa un correo electrónico válido</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="agresor" class="required">Nombre/Apellido del Agresor</label>
+                        <input type="text" id="agresor" name="agresor" required placeholder="Ingrese el nombre del agresor" autocomplete="off">
+                        <div class="error-message">Por favor ingresa el nombre del agresor</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reporte" class="required">Reporte</label>
+                        <textarea id="reporte" name="reporte" required placeholder="Describa su reporte con todos los detalles relevantes" autocomplete="off"></textarea>
+                        <div class="error-message">Por favor describe el incidente</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tipo">Tipo de incidente</label>
+                        <select id="tipo" name="tipo">
+                            <option value="">Seleccione una opción</option>
+                            <option value="violencia_fisica">Violencia física</option>
+                            <option value="violencia_psicologica">Violencia psicológica</option>
+                            <option value="acoso">Acoso</option>
+                            <option value="discriminacion">Discriminación</option>
+                            <option value="otros">Otros</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fecha">Fecha del incidente</label>
+                        <input type="date" id="fecha" name="fecha">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lugar">Lugar del incidente</label>
+                        <input type="text" id="lugar" name="lugar" placeholder="¿Dónde ocurrió el incidente?" autocomplete="off">
+                    </div>
+
+                    <input type="hidden" id="formToken" name="formToken">
+
+                    <button type="submit" class="btn" style="width: 100%;">
+                        <i class="fas fa-paper-plane"></i> Enviar Reporte
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trabajos Section -->
+    <section class="trabajos-section" id="trabajos">
+        <div class="container">
+            <div class="section-title">
+                <h2>Trabajos Académicos</h2>
+                <p>Explora y comparte investigaciones, tesis y documentos académicos sobre violencia de género</p>
+            </div>
+
+            <div class="trabajos-header">
+                <h3>Documentos Disponibles <span class="trabajos-count">(8)</span></h3>
+                <div class="trabajos-actions">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Buscar trabajos..." id="searchInput">
+                    </div>
+                    <select class="filter-select" id="categoryFilter">
+                        <option value="all">Todas las categorías</option>
+                        <option value="tesis">Tesis</option>
+                        <option value="investigacion">Investigaciones</option>
+                        <option value="informe">Informes</option>
+                        <option value="articulo">Artículos</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="trabajos-grid" id="trabajosGrid">
+                <!-- Trabajo 1 -->
+                <div class="trabajo-card" data-category="tesis">
+                    <div class="trabajo-header">
+                        <div class="trabajo-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="trabajo-title">
+                            <h3>Violencia de Género en el Ámbito Laboral</h3>
+                            <p>María Rodríguez</p>
+                        </div>
+                    </div>
+                    <div class="trabajo-body">
+                        <p class="trabajo-desc">Análisis de las manifestaciones de violencia de género en entornos laborales y propuestas de intervención.</p>
+                        <div class="trabajo-meta">
+                            <span><i class="fas fa-book"></i> Tesis</span>
+                            <span><i class="fas fa-calendar"></i> 2023</span>
+                            <span><i class="fas fa-download"></i> 128</span>
+                        </div>
+                        <div class="trabajo-actions">
+                            <button class="trabajo-btn download">
+                                <i class="fas fa-download"></i> Descargar
+                            </button>
+                            <button class="trabajo-btn view">
+                                <i class="fas fa-eye"></i> Ver
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trabajo 2 -->
+                <div class="trabajo-card" data-category="investigacion">
+                    <div class="trabajo-header">
+                        <div class="trabajo-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div class="trabajo-title">
+                            <h3>Estadísticas de Violencia Doméstica 2023</h3>
+                            <p>Instituto Nacional de Estadística</p>
+                        </div>
+                    </div>
+                    <div class="trabajo-body">
+                        <p class="trabajo-desc">Datos actualizados sobre casos de violencia doméstica en México durante el año 2023.</p>
+                        <div class="trabajo-meta">
+                            <span><i class="fas fa-chart-line"></i> Investigación</span>
+                            <span><i class="fas fa-calendar"></i> 2023</span>
+                            <span><i class="fas fa-download"></i> 254</span>
+                        </div>
+                        <div class="trabajo-actions">
+                            <button class="trabajo-btn download">
+                                <i class="fas fa-download"></i> Descargar
+                            </button>
+                            <button class="trabajo-btn view">
+                                <i class="fas fa-eye"></i> Ver
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trabajo 3 -->
+                <div class="trabajo-card" data-category="articulo">
+                    <div class="trabajo-header">
+                        <div class="trabajo-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <div class="trabajo-title">
+                            <h3>Impacto Psicológico en Víctimas</h3>
+                            <p>Dr. Carlos Méndez</p>
+                        </div>
+                    </div>
+                    <div class="trabajo-body">
+                        <p class="trabajo-desc">Artículo científico que explora las secuelas psicológicas en sobrevivientes de violencia de género.</p>
+                        <div class="trabajo-meta">
+                            <span><i class="fas fa-file-medical"></i> Artículo</span>
+                            <span><i class="fas fa-calendar"></i> 2022</span>
+                            <span><i class="fas fa-download"></i> 187</span>
+                        </div>
+                        <div class="trabajo-actions">
+                            <button class="trabajo-btn download">
+                                <i class="fas fa-download"></i> Descargar
+                            </button>
+                            <button class="trabajo-btn view">
+                                <i class="fas fa-eye"></i> Ver
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trabajo 4 -->
+                <div class="trabajo-card" data-category="informe">
+                    <div class="trabajo-header">
+                        <div class="trabajo-icon">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <div class="trabajo-title">
+                            <h3>Protocolo de Actuación para Instituciones</h3>
+                            <p>Comisión Nacional de Derechos Humanos</p>
+                        </div>
+                    </div>
+                    <div class="trabajo-body">
+                        <p class="trabajo-desc">Guía completa para la implementación de protocolos contra la violencia de género en instituciones.</p>
+                        <div class="trabajo-meta">
+                            <span><i class="fas fa-clipboard-check"></i> Informe</span>
+                            <span><i class="fas fa-calendar"></i> 2023</span>
+                            <span><i class="fas fa-download"></i> 312</span>
+                        </div>
+                        <div class="trabajo-actions">
+                            <button class="trabajo-btn download">
+                                <i class="fas fa-download"></i> Descargar
+                            </button>
+                            <button class="trabajo-btn view">
+                                <i class="fas fa-eye"></i> Ver
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paginación -->
+            <div class="pagination">
+                <button class="pagination-btn disabled"><i class="fas fa-chevron-left"></i></button>
+                <button class="pagination-btn active">1</button>
+                <button class="pagination-btn">2</button>
+                <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+
+            <!-- Sección de subida de archivos -->
+            <div class="upload-section">
+                <h3 class="upload-title">
+                    <i class="fas fa-cloud-upload-alt"></i> Comparte tu trabajo académico
+                </h3>
+                <form id="uploadForm" class="upload-form">
+                    <div class="form-group">
+                        <label for="titulo" class="required">Título del trabajo</label>
+                        <input type="text" id="titulo" name="titulo" required placeholder="Ej: Análisis de violencia de género en universidades">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="autor" class="required">Autor(es)</label>
+                        <input type="text" id="autor" name="autor" required placeholder="Nombres y apellidos completos">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categoria" class="required">Categoría</label>
+                        <select id="categoria" name="categoria" required>
+                            <option value="">Seleccione una categoría</option>
+                            <option value="tesis">Tesis</option>
+                            <option value="investigacion">Investigación</option>
+                            <option value="informe">Informe</option>
+                            <option value="articulo">Artículo</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ano">Año de publicación</label>
+                        <input type="number" id="ano" name="ano" min="2000" max="2023" placeholder="2023">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descripcion" class="required">Descripción</label>
+                        <textarea id="descripcion" name="descripcion" required placeholder="Describe brevemente el contenido de tu trabajo"></textarea>
+                    </div>
+
+                    <div class="file-upload">
+                        <div class="file-upload-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="file-upload-text">
+                            <h4>Sube tu archivo</h4>
+                            <p>Haz clic o arrastra un archivo PDF (Máximo 10MB)</p>
+                        </div>
+                        <input type="file" id="archivo" name="archivo" accept=".pdf" required>
+                        <div class="file-name" id="fileName">Ningún archivo seleccionado</div>
+                    </div>
+
+                    <div class="upload-btn">
+                        <button type="submit" class="btn">
+                            <i class="fas fa-upload"></i> Subir Trabajo
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Section -->
+    <section class="info-section" id="informacion">
+        <div class="container">
+            <div class="section-title">
+                <h2>Información importante</h2>
+                <p>Conoce más sobre el proceso de reporte y tus derechos</p>
+            </div>
+            <div class="info-content">
+                <div class="info-text">
+                    <h3>No estás solo</h3>
+                    <p>Reportar un incidente puede ser difícil, pero es el primer paso para obtener ayuda y prevenir que situaciones similares ocurran en el futuro.</p>
+
+                    <div class="info-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <h4>Confidencialidad garantizada</h4>
+                            <p>Tu identidad será protegida y solo se compartirá la información con las autoridades competentes cuando sea necesario.</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <h4>Proceso seguro</h4>
+                            <p>Utilizamos tecnología de encriptación para garantizar que tu información personal permanezca segura.</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <h4>Seguimiento del caso</h4>
+                            <p>Recibirás actualizaciones sobre el estado de tu reporte y el proceso seguido.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-visual">
+                    <h3>¿Qué es la violencia de género?</h3>
+                    <p>La violencia de género es todo acto que resulte en daño o sufrimiento físico, sexual o psicológico para las personas, incluyendo las amenazas de tales actos, la coacción o la privación arbitraria de la libertad, tanto si se producen
+                        en la vida pública como en la privada.</p>
+
+                    <div class="privacy-note">
+                        <h4>¿Cómo reportar un abuso?</h4>
+                        <p>Para reportar un abuso, proporciona detalles claros y específicos sobre el incidente, incluyendo fechas, lugares, y cualquier evidencia que puedas tener.</p>
+                    </div>
+
+                    <a href="#reportar" class="btn">Reportar ahora</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contacto">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Reporta Seguro</h3>
+                    <p>Plataforma segura para reportar casos de abuso y violencia.</p>
+                    <p>© 2023 Todos los derechos reservados</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p><i class="fas fa-envelope"></i> info@reportaseguro.org</p>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-HELP</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Ciudad de México, México</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Enlaces Rápidos</h3>
+                    <p><a href="#inicio">Inicio</a></p>
+                    <p><a href="#reportar">Reportar</a></p>
+                    <p><a href="#trabajos">Trabajos</a></p>
+                    <p><a href="#informacion">Información</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Sistema seguro con encriptación <i class="fas fa-lock"></i></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>¡Reporte Enviado!</h2>
+            <p>Tu reporte ha sido enviado con éxito y está siendo procesado.</p>
+            <p>Hemos enviado una copia de confirmación a tu correo electrónico.</p>
+            <button class="btn close-modal">Aceptar</button>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div class="modal" id="errorModal">
+        <div class="modal-content">
+            <div class="modal-icon error">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <h2>Error al Enviar</h2>
+            <p id="errorMessage">Ocurrió un error al enviar el reporte. Por favor, intente nuevamente.</p>
+            <button class="btn close-modal">Aceptar</button>
+        </div>
+    </div>
+
+    <!-- Upload Success Modal -->
+    <div class="modal" id="uploadSuccessModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>¡Trabajo Subido!</h2>
+            <p>Tu trabajo académico ha sido subido correctamente.</p>
+            <p>Será revisado por nuestro equipo antes de ser publicado.</p>
+            <button class="btn close-modal">Aceptar</button>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p>Enviando reporte, por favor espere...</p>
+    </div>
+
+    <!-- Cargar EmailJS de forma segura -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
+
+    <script>
+        // =============================================
+        // CONFIGURACIÓN SEGURA DE EMAILJS
+        // =============================================
+        // Función para decodificar valores (ofuscación básica)
+        function decodeConfigValue(encoded) {
+            return atob(encoded);
+        }
+
+        // Configuración ofuscada
+        const emailJSConfig = {
+            USER_ID: decodeConfigValue("cVI3cXZDelZHVEFFd3FZTmo="), // qR7qvCzVGTAEwqYNj
+            SERVICE_ID: decodeConfigValue("c2VydmljZV96aHV6cGVh"), // service_zhuzpea
+            TEMPLATE_ID: decodeConfigValue("Z21haWw="), // gmail (para administradores)
+            CONFIRMATION_TEMPLATE_ID: decodeConfigValue("Y29uZmlybWFjaW9u"), // confirmacion (para el usuario)
+            ENCRYPTION_KEY: "noteveo",
+            RECIPIENT_EMAILS: [
+                "thezeroteam27@gmail.com",
+                "dualcandor@gmail.com"
+            ]
+        };
+
+        // Inicializar EmailJS
+        try {
+            emailjs.init(emailJSConfig.USER_ID);
+            console.log("EmailJS inicializado correctamente");
+        } catch (error) {
+            console.error("Error al inicializar EmailJS:", error);
+            showErrorModal("Error de configuración del sistema. Por favor, contacte al administrador.");
+        }
+
+        // =============================================
+        // PROTECCIÓN CONTRA INSPECCIÓN
+        // =============================================
+        // Detectar herramientas de desarrollo
+        function detectDevTools() {
+            const threshold = 160; // Umbral en píxeles
+            const widthThreshold = window.outerWidth - window.innerWidth > threshold;
+            const heightThreshold = window.outerHeight - window.innerHeight > threshold;
+
+            if (widthThreshold || heightThreshold) {
+                document.body.innerHTML = '<div style="padding: 20px; text-align: center;"><h2>Acceso restringido</h2><p>El uso de herramientas de desarrollo no está permitido en esta página.</p></div>';
+                throw new Error("Herramientas de desarrollo detectadas");
+            }
+        }
+
+        // Verificar periódicamente
+        setInterval(detectDevTools, 1000);
+
+        // Deshabilitar funciones de teclado para inspeccionar
+        document.addEventListener('keydown', function(e) {
+            // Deshabilitar F12, Ctrl+Shift+I, Ctrl+U, etc.
+            if (e.key === 'F12' ||
+                (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+                (e.ctrlKey && e.shiftKey && e.key === 'C') ||
+                (e.ctrlKey && e.key === 'U')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // =============================================
+        // FUNCIONES DE ENCRIPTACIÓN
+        // =============================================
+        function encryptData(data) {
+            try {
+                return CryptoJS.AES.encrypt(data, emailJSConfig.ENCRYPTION_KEY).toString();
+            } catch (error) {
+                console.error("Error en encriptación:", error);
+                return data;
+            }
+        }
+
+        function encryptObject(obj) {
+            const encryptedObj = {};
+            for (const [key, value] of Object.entries(obj)) {
+                encryptedObj[key] = encryptData(value);
+            }
+            return encryptedObj;
+        }
+
+        // =============================================
+        // GENERADOR DE TOKENS DE FORMULARIO
+        // =============================================
+        function generateFormToken() {
+            const timestamp = Date.now().toString();
+            const random = Math.random().toString(36).substring(2);
+            return encryptData(timestamp + random);
+        }
+
+        // =============================================
+        // VALIDACIÓN DE FORMULARIO MEJORADA
+        // =============================================
+        function sanitizeInput(input) {
+            // Eliminar etiquetas HTML y caracteres potencialmente peligrosos
+            return input.replace(/<[^>]*>/g, '').trim();
+        }
+
+        function validateForm(formData) {
+            const errors = [];
+            const formGroups = document.querySelectorAll('.form-group');
+
+            // Reset error states
+            formGroups.forEach(group => {
+                group.classList.remove('error');
+            });
+
+            if (!formData.nombre.trim()) {
+                errors.push("El nombre es requerido");
+                document.getElementById('nombre').closest('.form-group').classList.add('error');
+            }
+
+            if (!formData.apellido.trim()) {
+                errors.push("El apellido es requerido");
+                document.getElementById('apellido').closest('.form-group').classList.add('error');
+            }
+
+            if (!formData.telefono.trim()) {
+                errors.push("El teléfono es requerido");
+                document.getElementById('telefono').closest('.form-group').classList.add('error');
+            }
+
+            if (!formData.correo.trim() || !/\S+@\S+\.\S+/.test(formData.correo)) {
+                errors.push("El correo electrónico no es válido");
+                document.getElementById('correo').closest('.form-group').classList.add('error');
+            }
+
+            if (!formData.agresor.trim()) {
+                errors.push("El nombre del agresor es requerido");
+                document.getElementById('agresor').closest('.form-group').classList.add('error');
+            }
+
+            if (!formData.reporte.trim()) {
+                errors.push("El reporte es requerido");
+                document.getElementById('reporte').closest('.form-group').classList.add('error');
+            }
+
+            // Validar token del formulario
+            if (!formData.formToken || formData.formToken !== document.getElementById('formToken').value) {
+                errors.push("Error de validación del formulario. Por favor, recargue la página e intente nuevamente.");
+            }
+
+            return errors;
+        }
+
+        // =============================================
+        // MANEJO DEL FORMULARIO
+        // =============================================
+        function showModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        function showErrorModal(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message || 'Ocurrió un error al enviar el reporte. Por favor, intente nuevamente.';
+            showModal('errorModal');
+        }
+
+        function showLoading(show) {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            if (show) {
+                loadingOverlay.classList.add('show');
+            } else {
+                loadingOverlay.classList.remove('show');
+            }
+        }
+
+        // =============================================
+        // FUNCIONES DE ENVÍO DE CORREOS
+        // =============================================
+        async function sendAdminEmails(templateParams) {
+            const promises = [];
+
+            for (const recipient of emailJSConfig.RECIPIENT_EMAILS) {
+                const emailParams = {
+                    ...templateParams,
+                    to_email: recipient,
+                    recipient_name: "Administrador"
+                };
+
+                promises.push(
+                    emailjs.send(emailJSConfig.SERVICE_ID, emailJSConfig.TEMPLATE_ID, emailParams)
+                    .then(response => ({
+                        success: true,
+                        recipient,
+                        response
+                    }))
+                    .catch(error => ({
+                        success: false,
+                        recipient,
+                        error: error.text || error.message || JSON.stringify(error)
+                    }))
+                );
+            }
+
+            return Promise.all(promises);
+        }
+
+        async function sendConfirmationEmail(templateParams) {
+            try {
+                const emailParams = {
+                    ...templateParams,
+                    to_email: templateParams.email,
+                    recipient_name: templateParams.name
+                };
+
+                const result = await emailjs.send(
+                    emailJSConfig.SERVICE_ID,
+                    emailJSConfig.CONFIRMATION_TEMPLATE_ID,
+                    emailParams
+                );
+
+                return {
+                    success: true,
+                    recipient: templateParams.email,
+                    response: result
+                };
+            } catch (error) {
+                console.error("Error enviando confirmación:", error);
+                return {
+                    success: false,
+                    recipient: templateParams.email,
+                    error: error.text || error.message || JSON.stringify(error)
+                };
+            }
+        }
+
+        async function getClientIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                return 'No disponible';
+            }
+        }
+
+        // =============================================
+        // MANEJO DEL ENVÍO DEL FORMULARIO
+        // =============================================
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+
+            // Sanitizar todas las entradas
+            const formData = {
+                nombre: sanitizeInput(document.getElementById('nombre').value),
+                apellido: sanitizeInput(document.getElementById('apellido').value),
+                telefono: sanitizeInput(document.getElementById('telefono').value),
+                correo: sanitizeInput(document.getElementById('correo').value),
+                agresor: sanitizeInput(document.getElementById('agresor').value),
+                reporte: sanitizeInput(document.getElementById('reporte').value),
+                tipo: document.getElementById('tipo').value,
+                fecha: document.getElementById('fecha').value,
+                lugar: sanitizeInput(document.getElementById('lugar').value),
+                formToken: document.getElementById('formToken').value,
+                timestamp: new Date().toISOString(),
+                ip_address: await getClientIP()
+            };
+
+            const errors = validateForm(formData);
+            if (errors.length > 0) {
+                showErrorModal("Por favor complete todos los campos requeridos:\n" + errors.join("\n"));
+                return;
+            }
+
+            showLoading(true);
+
+            try {
+                const encryptedData = encryptObject(formData);
+
+                const templateParams = {
+                    name: formData.nombre,
+                    apellido: formData.apellido,
+                    telefono: formData.telefono,
+                    email: formData.correo,
+                    agresor: formData.agresor,
+                    message: formData.reporte,
+                    time: new Date().toLocaleString('es-ES'),
+                    encrypted_data: JSON.stringify(encryptedData),
+                    tipo_incidente: formData.tipo || 'No especificado',
+                    fecha_incidente: formData.fecha || 'No especificada',
+                    lugar_incidente: formData.lugar || 'No especificado'
+                };
+
+                // Enviar correos a administradores
+                const adminResults = await sendAdminEmails(templateParams);
+
+                // Enviar correo de confirmación al usuario
+                const confirmationResult = await sendConfirmationEmail(templateParams);
+
+                const failedAdminEmails = adminResults.filter(result => !result.success);
+
+                if (failedAdminEmails.length === 0 && confirmationResult.success) {
+                    showModal('successModal');
+                    document.getElementById('reportForm').reset();
+                    // Regenerar token después de enviar
+                    document.getElementById('formToken').value = generateFormToken();
+                    console.log("Reporte enviado exitosamente a todos los destinatarios");
+                } else if (failedAdminEmails.length < adminResults.length && confirmationResult.success) {
+                    showModal('successModal');
+                    document.getElementById('reportForm').reset();
+                    document.getElementById('formToken').value = generateFormToken();
+                    console.warn("Reporte enviado parcialmente. Algunos correos fallaron:", failedAdminEmails);
+                } else if (!confirmationResult.success) {
+                    console.error("Error enviando confirmación:", confirmationResult.error);
+                    showErrorModal("Tu reporte fue recibido pero hubo un problema al enviar la confirmación. Por favor contacta a soporte para verificar.");
+                } else {
+                    const errorDetails = failedAdminEmails.map(f =>
+                        `• ${f.recipient}: ${f.error}`
+                    ).join('\n');
+
+                    throw new Error(`Todos los intentos de envío fallaron:\n${errorDetails}`);
+                }
+
+            } catch (error) {
+                console.error("Error al enviar el reporte:", error);
+                showErrorModal(error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // =============================================
+        // FUNCIONALIDAD PARA LA SECCIÓN DE TRABAJOS
+        // =============================================
+        function initTrabajosSection() {
+            // Manejar la subida de archivos
+            const archivoInput = document.getElementById('archivo');
+            const fileName = document.getElementById('fileName');
+
+            if (archivoInput && fileName) {
+                archivoInput.addEventListener('change', function() {
+                    if (this.files.length > 0) {
+                        fileName.textContent = this.files[0].name;
+                    } else {
+                        fileName.textContent = 'Ningún archivo seleccionado';
+                    }
+                });
+            }
+
+            // Filtrar trabajos
+            const categoryFilter = document.getElementById('categoryFilter');
+            const searchInput = document.getElementById('searchInput');
+            const trabajosGrid = document.getElementById('trabajosGrid');
+
+            if (categoryFilter && searchInput && trabajosGrid) {
+                const filterTrabajos = () => {
+                    const category = categoryFilter.value;
+                    const searchText = searchInput.value.toLowerCase();
+                    const trabajos = trabajosGrid.querySelectorAll('.trabajo-card');
+                    let visibleCount = 0;
+
+                    trabajos.forEach(trabajo => {
+                        const trabajoCategory = trabajo.getAttribute('data-category');
+                        const title = trabajo.querySelector('.trabajo-title h3').textContent.toLowerCase();
+                        const author = trabajo.querySelector('.trabajo-title p').textContent.toLowerCase();
+                        const desc = trabajo.querySelector('.trabajo-desc').textContent.toLowerCase();
+
+                        const categoryMatch = category === 'all' || trabajoCategory === category;
+                        const searchMatch = searchText === '' ||
+                            title.includes(searchText) ||
+                            author.includes(searchText) ||
+                            desc.includes(searchText);
+
+                        if (categoryMatch && searchMatch) {
+                            trabajo.style.display = 'block';
+                            visibleCount++;
+                        } else {
+                            trabajo.style.display = 'none';
+                        }
+                    });
+
+                    // Actualizar contador
+                    const countElement = document.querySelector('.trabajos-count');
+                    if (countElement) {
+                        countElement.textContent = `(${visibleCount})`;
+                    }
+                };
+
+                categoryFilter.addEventListener('change', filterTrabajos);
+                searchInput.addEventListener('input', filterTrabajos);
+            }
+
+            // Manejar el formulario de subida
+            const uploadForm = document.getElementById('uploadForm');
+            if (uploadForm) {
+                uploadForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    // Validación básica
+                    const titulo = document.getElementById('titulo').value;
+                    const autor = document.getElementById('autor').value;
+                    const categoria = document.getElementById('categoria').value;
+                    const archivo = document.getElementById('archivo').files[0];
+
+                    if (!titulo || !autor || !categoria || !archivo) {
+                        showErrorModal('Por favor complete todos los campos obligatorios');
+                        return;
+                    }
+
+                    // Validar tipo de archivo
+                    if (archivo.type !== 'application/pdf') {
+                        showErrorModal('Solo se permiten archivos PDF');
+                        return;
+                    }
+
+                    // Validar tamaño de archivo (10MB máximo)
+                    if (archivo.size > 10 * 1024 * 1024) {
+                        showErrorModal('El archivo no puede ser mayor a 10MB');
+                        return;
+                    }
+
+                    // Simular envío exitoso (aquí conectarías con tu backend)
+                    showLoading(true);
+                    setTimeout(() => {
+                        showLoading(false);
+                        showModal('uploadSuccessModal');
+                        uploadForm.reset();
+                        fileName.textContent = 'Ningún archivo seleccionado';
+                    }, 2000);
+                });
+            }
+
+            // Manejar botones de descarga y visualización
+            const downloadButtons = document.querySelectorAll('.trabajo-btn.download');
+            const viewButtons = document.querySelectorAll('.trabajo-btn.view');
+
+            downloadButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const card = this.closest('.trabajo-card');
+                    const title = card.querySelector('.trabajo-title h3').textContent;
+
+                    // Simular descarga
+                    showLoading(true);
+                    setTimeout(() => {
+                        showLoading(false);
+                        // Aquí normalmente se descargaría el archivo real
+                        console.log(`Descargando: ${title}`);
+                    }, 1500);
+                });
+            });
+
+            viewButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const card = this.closest('.trabajo-card');
+                    const title = card.querySelector('.trabajo-title h3').textContent;
+
+                    // Simular visualización
+                    alert(`Visualizando: ${title}\n\nEn una implementación real, esto abriría el documento en una nueva pestaña o visualizador PDF.`);
+                });
+            });
+        }
+
+        // =============================================
+        // EVENT LISTENERS
+        // =============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Generar token de formulario
+            document.getElementById('formToken').value = generateFormToken();
+
+            const reportForm = document.getElementById('reportForm');
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navMenu = document.getElementById('navMenu');
+
+            // Menú móvil
+            if (mobileMenuBtn && navMenu) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    navMenu.classList.toggle('show');
+                });
+            }
+
+            // Cerrar menú al hacer clic en un enlace
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (navMenu.classList.contains('show')) {
+                        navMenu.classList.remove('show');
+                    }
+                });
+            });
+
+            // Manejo del formulario
+            if (reportForm) {
+                reportForm.addEventListener('submit', handleFormSubmit);
+            }
+
+            // Cerrar modales
+            document.querySelectorAll('.close-modal').forEach(button => {
+                button.addEventListener('click', function() {
+                    hideModal(this.closest('.modal').id);
+                });
+            });
+
+            // Cerrar modal al hacer clic fuera del contenido
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        hideModal(this.id);
+                    }
+                });
+            });
+
+            // Validación en tiempo real
+            const formInputs = document.querySelectorAll('#reportForm input, #reportForm textarea');
+            formInputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    const formGroup = this.closest('.form-group');
+                    if (formGroup) {
+                        if (this.hasAttribute('required') && !this.value.trim()) {
+                            formGroup.classList.add('error');
+                        } else {
+                            formGroup.classList.remove('error');
+                        }
+                    }
+                });
+            });
+
+            // Inicializar sección de trabajos
+            initTrabajosSection();
+        });
+    </script>
+</body>
+
+</html>
